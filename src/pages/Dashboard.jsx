@@ -34,7 +34,7 @@ const Dashboard = ({ onLogout }) => {
       {/* Header */}
       <div className="dashboard-header">
         <div className="dashboard-header-left">
-          <h1>Dashboard</h1>
+          <h1>Stock Principal</h1>
           <p>Gestión de inventario y productos</p>
         </div>
         <div className="dashboard-header-actions">

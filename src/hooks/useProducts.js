@@ -6,6 +6,19 @@ import {
 }
 from "../services/productoService";
 
+import {
+
+    obtenerProductos,
+
+    crearProducto,
+
+    actualizarProducto,
+
+    eliminarProducto
+
+}
+from "../services/productoService";
+
 export const useProducts = () => {
 
     const [products, setProducts] = useState([]);
@@ -56,16 +69,23 @@ export const useProducts = () => {
     };
 
     // =========================
-    // TEMPORALES
+    // Editar Producto
     // =========================
-    const editProduct = async () => {
+    const editProduct = async (id, producto) => {
 
-        console.warn("editar pendiente");
+        await actualizarProducto(id, producto);
+
+        await cargarProductos();
     };
 
-    const removeProduct = async () => {
+    // =========================
+    // Eliminar Producto
+    // =========================
+    const removeProduct = async (id) => {
 
-        console.warn("eliminar pendiente");
+        await eliminarProducto(id);
+
+        await cargarProductos();
     };
 
     return {

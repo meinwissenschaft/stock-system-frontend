@@ -98,3 +98,42 @@ export const crearProducto = async (producto) => {
 
     return response.data;
 };
+
+// =========================
+// Actualizar Producto
+// =========================
+export const actualizarProducto = async (
+    id,
+    producto
+) => {
+
+    const categoria = PRODUCT_TYPES.find(
+        t => t.nombre === producto.tipo
+    );
+
+    const payload = {
+
+        nombre: producto.nombre,
+
+        descripcion: producto.descripcion,
+
+        cantidadInicial: producto.cantidad,
+
+        categoriaId: categoria.id
+    };
+
+    const response = await api.put(
+        `/productos/${id}`,
+        payload
+    );
+
+    return response.data;
+};
+
+// =========================
+// Eliminar Producto
+// =========================
+export const eliminarProducto = async (id) => {
+
+    await api.delete(`/productos/${id}`);
+};

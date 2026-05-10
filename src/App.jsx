@@ -1,0 +1,35 @@
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+
+function App() {
+  const [auth, setAuth] = useState(localStorage.getItem('isAuthenticated') === 'true');
+
+  const logout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('user');
+    setAuth(false);
+  };
+
+  return (
+    <ThemeProvider>
+      <ToastProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login onLogin={() => setAuth(true)} />} />
+            <Route
+              path="/dashboard"
+              element={auth ? <Dashboard onLogout={logout} /> : <Navigate to="/login" />}
+            />
+            <Route path="*" element={<Navigate to={auth ? "/dashboard" : "/login"} />} />
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
+    </ThemeProvider>
+  );
+}
+
+export default App;

@@ -1,0 +1,100 @@
+import api from "../api/axios";
+
+// =========================
+// TIPOS UI
+// =========================
+export const PRODUCT_TYPES = [
+
+    {
+        id: 1,
+        nombre: "Accesorios"
+    },
+
+    {
+        id: 2,
+        nombre: "Construcción"
+    },
+
+    {
+        id: 3,
+        nombre: "Ferretería"
+    },
+
+    {
+        id: 4,
+        nombre: "Indumentaria"
+    },
+
+    {
+        id: 5,
+        nombre: "Industrial"
+    }, 
+
+    {
+        id: 6,
+        nombre: "Informática"
+    },
+
+    {
+        id: 7,
+        nombre: "Mecánica"
+    },
+
+    {
+        id: 8,
+        nombre: "Nautica"
+    }
+];
+
+// =========================
+// GET PRODUCTOS
+// =========================
+export const obtenerProductos = async () => {
+
+    const response = await api.get("/productos");
+
+    // 🔥 adaptar backend → frontend
+    return response.data.map(p => ({
+
+        id: p.codProd,
+
+        codigo: `PROD-${p.codProd}`,
+
+        nombre: p.nombre,
+
+        descripcion: p.descripcion,
+
+        tipo: p.categoria,
+
+        cantidad: p.stock
+    }));
+};
+
+// =========================
+// CREAR PRODUCTO
+// =========================
+export const crearProducto = async (producto) => {
+
+    // buscar categoria
+    const categoria = PRODUCT_TYPES.find(
+        t => t.nombre === producto.tipo
+    );
+
+    const payload = {
+
+        nombre: producto.nombre,
+
+        descripcion: producto.descripcion,
+
+        cantidadInicial: producto.cantidad,
+
+        categoriaId: categoria.id
+    };
+
+    const response = await api.post(
+        "/productos",
+        payload
+    );
+
+    return response.data;
+};

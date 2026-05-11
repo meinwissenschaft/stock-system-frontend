@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 
 import {
-    obtenerProductos,
-    crearProducto
-}
-from "../services/productoService";
-
-import {
 
     obtenerProductos,
 

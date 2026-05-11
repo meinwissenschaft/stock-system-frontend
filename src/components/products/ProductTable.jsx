@@ -132,9 +132,9 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
             </tr>
           </thead>
           <tbody>
-            {paginated.map(prod => (
+            {paginated.map((prod, index) => (
               <tr key={prod.id}>
-                <td>{prod.id}</td>
+                <td>{(safePage - 1) * perPage + index + 1}</td>
                 <td><code style={{ fontSize: '0.8rem', background: 'var(--accent-light)', color: 'var(--accent)', padding: '2px 8px', borderRadius: '4px' }}>{prod.codigo}</code></td>
                 <td style={{ fontWeight: 500 }}>{prod.nombre}</td> <td
   style={{

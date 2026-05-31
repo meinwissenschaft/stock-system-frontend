@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import InformesPage from "./pages/InformesPage";
 
 function App() {
   const [auth, setAuth] = useState(localStorage.getItem('isAuthenticated') === 'true');
@@ -22,9 +23,30 @@ function App() {
             <Route path="/login" element={<Login onLogin={() => setAuth(true)} />} />
             <Route
               path="/dashboard"
-              element={auth ? <Dashboard onLogout={logout} /> : <Navigate to="/login" />}
+              element={
+                auth
+                ? <Dashboard onLogout={logout} />
+                : <Navigate to="/login" />
+              }
             />
-            <Route path="*" element={<Navigate to={auth ? "/dashboard" : "/login"} />} />
+
+            <Route
+              path="/informes"
+              element={
+                auth
+                ? <InformesPage onLogout={logout} />
+                : <Navigate to="/login" />
+              }
+            />
+
+            <Route
+              path="*"
+              element={
+                <Navigate
+                to={auth ? "/dashboard" : "/login"}
+                />
+              }
+            />
           </Routes>
         </BrowserRouter>
       </ToastProvider>

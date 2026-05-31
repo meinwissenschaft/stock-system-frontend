@@ -5,6 +5,7 @@ import ProductForm from '../components/products/ProductForm';
 import { useProducts } from '../hooks/useProducts';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 
+
 const Dashboard = ({ onLogout }) => {
   const { products, loading, addProduct, editProduct, removeProduct } = useProducts();
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -70,7 +71,7 @@ const Dashboard = ({ onLogout }) => {
           <div className="stat-card-value">{stats.lowStock}</div>
         </div>
       </div>
-
+      
       {/* Tabla de Productos: */}
       <ProductTable
         products={products}

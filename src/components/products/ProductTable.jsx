@@ -5,7 +5,7 @@ import ProductForm from './ProductForm';
 
 const PER_PAGE_OPTIONS = [15, 25, 50, 100];
 
-const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
+const ProductTable = ({ products, loading, onAdd, onEdit, onDelete, onIngreso, onEgreso }) => {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(15);
@@ -31,7 +31,7 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
   const safePage = Math.min(currentPage, totalPages);
   const paginated = filtered.slice((safePage - 1) * perPage, safePage * perPage);
 
-  // Reset page when search or perPage changes
+  // Restablecer pagina cuando cambia la busqueda o el valor de perPage:
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
     setCurrentPage(1);
@@ -42,7 +42,7 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
     setCurrentPage(1);
   };
 
-  // Edit
+  // Editar:
   const handleEditClick = (product) => {
     setEditingProduct({
       id: product.id,
@@ -57,9 +57,19 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
     setEditingProduct(null);
   };
 
-  // Delete
+  // Eliminar
   const handleDeleteClick = (product) => {
     setDeletingProduct(product);
+  };
+
+  //Ingresar
+  const handleIngresoClick = (product) => {
+    onIngreso(product);
+  };
+
+  //Egresar
+  const handleEgresoClick = (product) => {
+    onEgreso(product);
   };
 
   const handleDeleteConfirm = async () => {
@@ -74,7 +84,7 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
     }
   };
 
-  // Expose focus search for keyboard shortcut
+  // Mostrar la búsqueda de enfoque para el atajo de teclado:
   ProductTable.focusSearch = () => searchRef.current?.focus();
 
   return (
@@ -136,21 +146,18 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
               <tr key={prod.id}>
                 <td>{(safePage - 1) * perPage + index + 1}</td>
                 <td><code style={{ fontSize: '0.8rem', background: 'var(--accent-light)', color: 'var(--accent)', padding: '2px 8px', borderRadius: '4px' }}>{prod.codigo}</code></td>
-                <td style={{ fontWeight: 500 }}>{prod.nombre}</td> <td
-  style={{
-    maxWidth: '250px',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    color: 'var(--text-secondary)',
-    fontSize: '0.9rem'
-  }}
-  title={prod.descripcion}
->
-
-  {prod.descripcion}
-
-</td>
+                <td style={{ fontWeight: 500 }}>{prod.nombre}</td> 
+                <td style={{
+                            maxWidth: '250px',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            color: 'var(--text-secondary)',
+                            fontSize: '0.9rem'
+                          }}
+                          title={prod.descripcion}>
+                            {prod.descripcion}
+                </td>
                 <td>
                   <span style={{ fontSize: '0.8rem', background: 'var(--bg-hover)', padding: '3px 10px', borderRadius: '12px', color: 'var(--text-secondary)' }}>
                     {prod.tipo}
@@ -166,6 +173,19 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete }) => {
                       aria-label={`Editar ${prod.nombre}`}
                     >
                       <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button 
+                      className="table-action-btn"
+                      onClick={() => handleIngresoClick(prod)}
+                      title="Ingresar stock"
+                    >📦
+                    </button>
+
+                    <button
+                      className="table-action-btn"
+                      onClick={() => handleEgresoClick(prod)}
+                      title="Retirar stock"
+                    >📤
                     </button>
                     <button
                       className="table-action-btn delete"

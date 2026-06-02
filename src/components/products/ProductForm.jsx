@@ -5,8 +5,7 @@ import { PRODUCT_TYPES } from "../../services/productoService";
 const emptyForm = {
   nombre: '',
   descripcion: '',
-  tipo: PRODUCT_TYPES[0].nombre,
-  cantidad: ''
+  tipo: PRODUCT_TYPES[0].nombre
 };
 
 const ProductForm = ({ isOpen, onClose, onSubmit, editData = null }) => {
@@ -24,7 +23,6 @@ const ProductForm = ({ isOpen, onClose, onSubmit, editData = null }) => {
   const validate = () => {
     if (!form.nombre.trim()) return 'El nombre del producto es obligatorio';
     if (!form.tipo) return 'Selecciona un tipo de producto';
-    if (!form.cantidad || Number(form.cantidad) < 0) return 'La cantidad debe ser un número positivo';
     return null;
   };
 
@@ -38,7 +36,6 @@ const ProductForm = ({ isOpen, onClose, onSubmit, editData = null }) => {
         nombre: form.nombre.trim(),
         descripcion: form.descripcion.trim(),
         tipo: form.tipo,
-        cantidad: Number(form.cantidad),
       });
 
       if (closeAfter) {
@@ -131,18 +128,6 @@ const ProductForm = ({ isOpen, onClose, onSubmit, editData = null }) => {
         </select>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="prod-cantidad">Cantidad</label>
-        <input
-          id="prod-cantidad"
-          type="number"
-          name="cantidad"
-          placeholder="0"
-          min="0"
-          value={form.cantidad}
-          onChange={handleChange}
-        />
-      </div>
     </Modal>
   );
 };

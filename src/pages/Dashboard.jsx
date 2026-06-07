@@ -4,11 +4,18 @@ import ProductTable from '../components/products/ProductTable';
 import ProductForm from '../components/products/ProductForm';
 import { useProducts } from '../hooks/useProducts';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import StockMovementModal from '../components/products/StockMovementModal';
+import {registrarIngreso, registrarEgreso} from "../services/movimientoService";
 
 
 const Dashboard = ({ onLogout }) => {
   const { products, loading, addProduct, editProduct, removeProduct } = useProducts();
   const [showCreateForm, setShowCreateForm] = useState(false);
+
+  //Constantes para movimiento de producto:
+  const [movementProduct, setMovementProduct] = useState(null);
+
+  const [movementType, setMovementType] = useState(null);
 
   // Stats calculadas
   const stats = useMemo(() => {
@@ -29,6 +36,50 @@ const Dashboard = ({ onLogout }) => {
   const handleCreateSubmit = useCallback(async (data) => {
     await addProduct(data);
   }, [addProduct]);
+  
+  //Manejo de movimiento de productos:
+  const handleIngreso = (product) => {
+
+    setMovementProduct(product);
+
+    setMovementType("INGRESO");
+  };
+  
+  const handleEgreso = (product) => {
+
+    setMovementProduct(product);
+
+    setMovementType("EGRESO");
+  };
+  const handleMovementSubmit =
+    async (data) => {
+
+        if (
+            movementType ===
+            "INGRESO"
+        ) {
+
+            await registrarIngreso(
+                data
+            );
+
+        } else {
+
+            await registrarEgreso(
+                data
+            );
+        }
+
+        //await reloadProducts();
+
+        setMovementProduct(
+            null
+        );
+
+        setMovementType(
+            null
+        );
+    };
 
   return (
     <DashboardLayout onLogout={onLogout}>
@@ -79,6 +130,8 @@ const Dashboard = ({ onLogout }) => {
         onAdd={addProduct}
         onEdit={editProduct}
         onDelete={removeProduct}
+        onIngreso={handleIngreso}
+        onEgreso={handleEgreso}
       />
 
       {/* Formulario para crear productos (Create Product Modal): */}
@@ -86,6 +139,22 @@ const Dashboard = ({ onLogout }) => {
         isOpen={showCreateForm}
         onClose={() => setShowCreateForm(false)}
         onSubmit={handleCreateSubmit}
+      />
+      {/* modal Stock movimientos: */} 
+      <StockMovementModal
+
+          isOpen={movementProduct !== null}
+
+          onClose={() => {
+            setMovementProduct(null);
+            setMovementType(null);
+          }}
+
+          product={movementProduct}
+
+          type={movementType}
+
+          onSubmit={handleMovementSubmit}
       />
     </DashboardLayout>
   );

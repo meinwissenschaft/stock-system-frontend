@@ -26,7 +26,7 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete, onIngreso, o
     );
   }, [products, search]);
 
-  // Paginación
+  // Paginación:
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
   const safePage = Math.min(currentPage, totalPages);
   const paginated = filtered.slice((safePage - 1) * perPage, safePage * perPage);
@@ -201,7 +201,7 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete, onIngreso, o
         </table>
       )}
 
-      {/* Pagination */}
+      {/* Paginación */}
       <Pagination
         currentPage={safePage}
         totalPages={totalPages}
@@ -210,7 +210,7 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete, onIngreso, o
         onPageChange={setCurrentPage}
       />
 
-      {/* Edit Modal */}
+      {/* Editar Modal */}
       <ProductForm
         isOpen={editingProduct !== null}
         onClose={() => setEditingProduct(null)}
@@ -218,7 +218,7 @@ const ProductTable = ({ products, loading, onAdd, onEdit, onDelete, onIngreso, o
         editData={editingProduct}
       />
 
-      {/* Delete Confirmation */}
+      {/* Delete Confirmación */}
       <ConfirmDialog
         isOpen={deletingProduct !== null}
         onClose={() => setDeletingProduct(null)}

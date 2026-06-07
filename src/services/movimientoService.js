@@ -1,47 +1,28 @@
 import api from "../api/axios";
 
-// INGRESO:
-export const registrarIngreso = async (
-    productoId,
-    cantidad
-) => {
+export const registrarIngreso =
+    async (data) => {
 
-    const payload = {
+        const response =
+            await api.post(
+                "/ingresos",
+                data
+            );
 
-        productoId,
-
-        cantidad
+        return response.data;
     };
 
-    const response = await api.post(
-        "/ingresos",
-        payload
-    );
+export const registrarEgreso =
+    async (data) => {
 
-    return response.data;
-};
+        const response =
+            await api.post(
+                "/egresos",
+                data
+            );
 
-
-// EGRESO
-export const registrarEgreso = async (
-    productoId,
-    cantidad
-) => {
-
-    const payload = {
-
-        productoId,
-
-        cantidad
+        return response.data;
     };
-
-    const response = await api.post(
-        "/egresos",
-        payload
-    );
-
-    return response.data;
-};
 
 //obtener movimientos:
 export const obtenerMovimientos =

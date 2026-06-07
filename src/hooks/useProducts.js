@@ -19,9 +19,7 @@ export const useProducts = () => {
 
     const [loading, setLoading] = useState(true);
 
-    // =========================
-    // LOAD
-    // =========================
+    // Carga de Productos:
     const cargarProductos = async () => {
 
         try {
@@ -42,29 +40,23 @@ export const useProducts = () => {
         }
     };
 
-    // =========================
-    // INIT
-    // =========================
+    // Inicialización de productos:
     useEffect(() => {
 
         cargarProductos();
 
     }, []);
 
-    // =========================
-    // ADD
-    // =========================
+    // Crear Productos:
     const addProduct = async (producto) => {
 
         await crearProducto(producto);
 
-        // 🔥 refrescar tabla
+        // Refrescar tabla:
         await cargarProductos();
     };
 
-    // =========================
-    // Editar Producto
-    // =========================
+    // Editar Producto:
     const editProduct = async (id, producto) => {
 
         await actualizarProducto(id, producto);
@@ -72,9 +64,7 @@ export const useProducts = () => {
         await cargarProductos();
     };
 
-    // =========================
-    // Eliminar Producto
-    // =========================
+    // Eliminar Producto:
     const removeProduct = async (id) => {
 
         await eliminarProducto(id);
@@ -92,6 +82,8 @@ export const useProducts = () => {
 
         editProduct,
 
-        removeProduct
+        removeProduct,
+
+        cargarProductos
     };
 };

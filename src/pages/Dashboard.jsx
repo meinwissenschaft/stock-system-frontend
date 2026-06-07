@@ -9,7 +9,15 @@ import {registrarIngreso, registrarEgreso} from "../services/movimientoService";
 
 
 const Dashboard = ({ onLogout }) => {
-  const { products, loading, addProduct, editProduct, removeProduct } = useProducts();
+  const {
+    products,
+    loading,
+    addProduct,
+    editProduct,
+    removeProduct,
+    cargarProductos
+  } = useProducts();
+
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   //Constantes para movimiento de producto:
@@ -51,35 +59,24 @@ const Dashboard = ({ onLogout }) => {
 
     setMovementType("EGRESO");
   };
-  const handleMovementSubmit =
-    async (data) => {
+  
+  const handleMovementSubmit = async (data) => {
 
-        if (
-            movementType ===
-            "INGRESO"
-        ) {
+    if (movementType === "INGRESO") {
 
-            await registrarIngreso(
-                data
-            );
+        await registrarIngreso(data);
 
-        } else {
+    } else {
 
-            await registrarEgreso(
-                data
-            );
-        }
+        await registrarEgreso(data);
+    }
 
-        //await reloadProducts();
+    await cargarProductos();
 
-        setMovementProduct(
-            null
-        );
+    setMovementProduct(null);
 
-        setMovementType(
-            null
-        );
-    };
+    setMovementType(null);
+  };
 
   return (
     <DashboardLayout onLogout={onLogout}>

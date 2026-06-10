@@ -39,29 +39,21 @@ export default function InformesPage({
     const cargarMovimientos = async () => {
 
     try {
-
         console.log("Iniciando carga");
-
         const data =
             await obtenerMovimientos();
 
         console.log("MOVIMIENTOS:", data);
-
         setMovimientos(data);
 
     } catch (error) {
-
         console.error("ERROR:", error);
-
     }
 };
 
     const handleFilterChange = (e) => {
-
         setFilters({
-
             ...filters,
-
             [e.target.name]:
                 e.target.value
         });
@@ -69,57 +61,70 @@ export default function InformesPage({
 
     const filteredMovimientos =
         movimientos.filter((mov) => {
-
             const tipoMatch =
+            !filters.tipo ||
+            mov.tipo === filters.tipo;
 
-                !filters.tipo ||
+        const productoMatch =
+            mov.producto
+                .toLowerCase()
+                .includes(
+                    filters.producto
+                        .toLowerCase()
+                );
 
-                mov.tipo === filters.tipo;
+        const desdeMatch =
+            !filters.desde ||
+            mov.fecha >= filters.desde;
 
-            const productoMatch =
+        const hastaMatch =
+            !filters.hasta ||
+            mov.fecha <= filters.hasta;
 
-                mov.producto
-                    .toLowerCase()
-                    .includes(
-                        filters.producto
-                            .toLowerCase()
-                    );
+        return (
+            tipoMatch &&
+            productoMatch &&
+            desdeMatch &&
+            hastaMatch
+        );
+    });
 
-            const desdeMatch =
+    const totalMovimientos =
+        filteredMovimientos.length;
 
-                !filters.desde ||
+    const totalIngresos =
+        filteredMovimientos
+        .filter(
+            mov =>
+                mov.tipo === "INGRESO"
+        )
+        .reduce(
+            (total, mov) =>
+                total + mov.cantidad,
+            0
+        );
 
-                mov.fecha >= filters.desde;
+    const totalEgresos =
+        filteredMovimientos
+        .filter(
+            mov =>
+                mov.tipo === "EGRESO"
+        )
+        .reduce(
+            (total, mov) =>
+                total + mov.cantidad,
+            0
+        );
 
-            const hastaMatch =
+    const balanceStock = totalIngresos - totalEgresos;
 
-                !filters.hasta ||
-
-                mov.fecha <= filters.hasta;
-
-            return (
-
-                tipoMatch &&
-
-                productoMatch &&
-
-                desdeMatch &&
-
-                hastaMatch
-            );
-        });
-
-    // 👇 ACÁ VA EL RENDER
+    //Render:
     return (
-
         <DashboardLayout
             onLogout={onLogout}
         >
-
             <div className="dashboard-header">
-
                 <div>
-
                     <h1>
                         Informes
                     </h1>
@@ -127,27 +132,62 @@ export default function InformesPage({
                     <p>
                         Reporte de movimientos
                     </p>
+                </div>
+            </div>
 
+            <div className="stats-grid">
+                <div className="stat-card">
+                    <div className="stat-card-label">
+                         Movimientos
+                    </div>
+
+                    <div className="stat-card-value">
+                        {totalMovimientos}
+                    </div>
                 </div>
 
+                <div className="stat-card">
+                    <div className="stat-card-label">
+                        Ingresos
+                    </div>
+
+                    <div className="stat-card-value">
+                        {totalIngresos}
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-card-label">
+                        Egresos
+                    </div>
+
+                    <div className="stat-card-value">
+                        {totalEgresos}
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-card-label">
+                        Balance
+                    </div>
+
+                    <div className="stat-card-value">
+                        {balanceStock}
+                    </div>
+                </div>
             </div>
 
             <InformeFilters
-
                 filters={filters}
-
                 onChange={
                     handleFilterChange
                 }
-
             />
 
             <InformeTable
-
                 movimientos={
                     filteredMovimientos
                 }
-
             />
 
         </DashboardLayout>

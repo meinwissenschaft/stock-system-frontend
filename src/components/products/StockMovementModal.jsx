@@ -29,17 +29,33 @@ export default function StockMovementModal({
             return;
         }
 
-        await onSubmit({
+        if (
+            type === "EGRESO" &&
+            Number(cantidad) > product.cantidad
+        ) {
+            alert(
+                `Stock insuficiente. Disponible: ${product.cantidad}`
+            );
+            return;
+        }
 
+        try {
+
+            await onSubmit({
             productoId: product.id,
-
             cantidad: Number(cantidad)
-
         });
 
-        setCantidad("");
+            setCantidad("");
+            onClose();
 
-        onClose();
+        } catch (error) {
+
+            alert(
+                error.response?.data?.error
+                || "Error al registrar movimiento"
+            );
+        }
     };
 
     return (
@@ -81,14 +97,19 @@ export default function StockMovementModal({
         >
 
             <p>
-
                 Producto:
-
                 <strong>
                     {" "}
                     {product?.nombre}
                 </strong>
+            </p>
 
+            <p>
+                Stock actual:
+                <strong>
+                    {" "}
+                    {product?.cantidad}
+                </strong>
             </p>
 
             <div className="form-group">

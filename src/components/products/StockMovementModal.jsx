@@ -19,13 +19,20 @@ export default function StockMovementModal({
         useState("");
 
     const handleSubmit = async () => {
-
+        const cantidadNum = Number(cantidad);
+        
         if (!cantidad || Number(cantidad) <= 0) {
 
             alert(
                 "Ingrese una cantidad válida"
             );
-
+            return;
+        }
+        
+        if (!Number.isInteger(cantidadNum)) {
+            alert(
+                "Solo se permiten cantidades enteras"
+            );
             return;
         }
 
@@ -38,6 +45,8 @@ export default function StockMovementModal({
             );
             return;
         }
+
+        
 
         try {
 
@@ -129,19 +138,11 @@ export default function StockMovementModal({
                 </label>
 
                 <input
-
                     type="number"
-
                     min="1"
-
+                    step="1"
                     value={cantidad}
-
-                    onChange={(e) =>
-                        setCantidad(
-                            e.target.value
-                        )
-                    }
-
+                    onChange={(e) => setCantidad(e.target.value)}
                 />
 
             </div>

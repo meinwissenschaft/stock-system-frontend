@@ -107,9 +107,17 @@ export default function StockMovementModal({
             <p>
                 Stock actual:
                 <strong>
-                    {" "}
                     {product?.cantidad}
                 </strong>
+                {" "}
+                
+                {product?.cantidad === 0 && "🔴 Sin stock"}
+                {product?.cantidad > 0 &&
+                    product?.cantidad < 5 &&
+                    "🟡 Stock bajo"}
+
+                    {product?.cantidad >= 5 &&
+                    "🟢 Stock normal"}
             </p>
 
             <div className="form-group">
